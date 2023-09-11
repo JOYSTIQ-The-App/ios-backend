@@ -1,0 +1,46 @@
+# version: '3'
+
+# tasks:
+#   start-postgres:
+#     desc: Start a new PostgreSQL Docker container
+#     cmds:
+#       - docker run --name postgres-container -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 -d postgres
+
+#   connect-postgres:
+#     desc: Connect to the PostgreSQL container
+#     cmds:
+#       - docker exec -it postgres-container psql -U postgres
+
+#   init-db:
+#     desc: Create and initialize the joystiq database
+#     cmds:
+#       - echo "CREATE DATABASE joystiq;" | docker exec -i postgres-container psql -U postgres
+#       - docker exec -i postgres-container psql -U postgres -d joystiq < ./schema.sql
+
+#   all:
+#     desc: Start PostgreSQL container and initialize the database
+#     deps:
+#       - start-postgres
+#       - init-db
+
+# docker run --name joystiq-postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=joystiq -p 5432:5432 -d postgres
+
+
+version: '3'
+
+tasks:
+  build:
+    desc: Build the Docker containers.
+    cmds:
+      - docker-compose build
+  
+  up:
+    desc: Run the Docker containers.
+    cmds:
+      - docker-compose up -d
+
+  down:
+    desc: Stop and remove the Docker containers.
+    cmds:
+      - docker-compose down
+
