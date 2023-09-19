@@ -2,29 +2,12 @@ package handlers
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 
-	"github.com/JOYSTIQ-The-App/Backend/api/models"
+	"github.com/JOYSTIQ-The-App/Backend/api/parsers"
 	sq "github.com/Masterminds/squirrel"
 	"github.com/gofiber/fiber/v2"
 )
-
-func ParseRoleType(roleStr string) (models.RoleType, error) {
-	switch roleStr {
-	case string(models.Admin):
-		return models.Admin, nil
-
-	case string(models.Org):
-		return models.Org, nil
-
-	case string(models.Gamer):
-		return models.Gamer, nil
-
-	default:
-		return "", fmt.Errorf("invalid role type: %s", roleStr)
-	}
-}
 
 func CreateUser(db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
@@ -32,7 +15,7 @@ func CreateUser(db *sql.DB) fiber.Handler {
 		userName := c.Query("username")
 
 		roleStr := c.Query("role")
-		userRole, err := ParseRoleType(roleStr)
+		userRole, err := parsers.ParseRoleType(roleStr)
 		if err != nil {
 			log.Println(err)
 			return c.Status(fiber.StatusBadRequest).SendString("Invalid role type provided")

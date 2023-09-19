@@ -1,46 +1,45 @@
-# version: '3'
-
-# tasks:
-#   start-postgres:
-#     desc: Start a new PostgreSQL Docker container
-#     cmds:
-#       - docker run --name postgres-container -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 -d postgres
-
-#   connect-postgres:
-#     desc: Connect to the PostgreSQL container
-#     cmds:
-#       - docker exec -it postgres-container psql -U postgres
-
-#   init-db:
-#     desc: Create and initialize the joystiq database
-#     cmds:
-#       - echo "CREATE DATABASE joystiq;" | docker exec -i postgres-container psql -U postgres
-#       - docker exec -i postgres-container psql -U postgres -d joystiq < ./schema.sql
-
-#   all:
-#     desc: Start PostgreSQL container and initialize the database
-#     deps:
-#       - start-postgres
-#       - init-db
-
-# docker run --name joystiq-postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=joystiq -p 5432:5432 -d postgres
-
-
 version: '3'
 
 tasks:
-  build:
-    desc: Build the Docker containers.
+  start-postgres:
+    desc: Start a new PostgreSQL Docker container
     cmds:
-      - docker-compose build
+      - docker run --name alpha-db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres
+
+  init-db:
+    desc: Create and initialize the joystiq database
+    cmds:
+      - docker exec -it alpha-db psql -U postgres -c "CREATE DATABASE joystiq;"
+      - docker exec -i alpha-db psql -U postgres -d joystiq < ./schema.sql
+    
+  add-dummy:
+    desc: Add dummy data to the database
+    cmds:
+      - docker exec -i alpha-db psql -U postgres -d joystiq < ./dummy.sql
+
+  all:
+    desc: Start PostgreSQL container, initialize the database, and add dummy data 
+    cmds:
+      - task: init-db
+      - task: add-dummy
+
+  test:
+    desc: Run the test.sql file on the postgres container
+    cmds:
+      - docker exec -i alpha-db psql -U postgres -d joystiq < ./test.sql
+
+  start:
+    desc: Stop the postgres docker container
+    cmds:
+      - docker start alpha-db
+
+  stop:
+    desc: Stop the postgres docker container
+    cmds:
+      - docker stop alpha-db
   
-  up:
-    desc: Run the Docker containers.
+  reset:
+    desc: Stop and remove the postgres docker container
     cmds:
-      - docker-compose up -d
-
-  down:
-    desc: Stop and remove the Docker containers.
-    cmds:
-      - docker-compose down
-
+      - docker stop alpha-db && docker rm alpha-db
+  

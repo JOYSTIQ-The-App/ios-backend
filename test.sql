@@ -1,3 +1,1 @@
-SELECT * FROM users;
-
-SELECT * FROM follows;
+select * from posts;

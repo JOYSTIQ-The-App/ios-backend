@@ -29,7 +29,8 @@ func main() {
 	app.Get("handlers/get_global_feed", handlers.GetGlobalFeed(db))
 	app.Get("handlers/get_leaderboard_feed", handlers.GetLeaderboardFeed(db))
 
-	app.Put("handlers/create_user", handlers.CreateUser(db))
+	app.Post("handlers/create_user", handlers.CreateUser(db))
+	app.Post("handlers/create_post", handlers.CreatePost(db))
 
 	log.Fatal(app.Listen(":8080"))
 }

@@ -9,7 +9,8 @@ INSERT INTO "users" ("email", "username", "role") VALUES
 ('user7@email.com', 'generalUser7', 'gamer'),
 ('user8@email.com', 'generalUser8', 'gamer'),
 ('org9@email.com', 'orgUser9', 'org'),
-('org10@email.com', 'orgUser10', 'org');
+('org10@email.com', 'orgUser10', 'org'),
+('apical@example.com', 'apical', 'gamer');
 
 -- Follows
 INSERT INTO "follows" ("following_user_id", "followed_user_id", "created_at") VALUES
@@ -20,30 +21,40 @@ INSERT INTO "follows" ("following_user_id", "followed_user_id", "created_at") VA
 (7, 6, now()),
 (7, 8, now()),
 (7, 9, now()),
-(7, 10, now());
+(7, 10, now()),
+(11, 1, now()),
+(11, 2, now()),
+(11, 3, now()),
+(11, 4, now()),
+(11, 5, now()),
+(11, 6, now()),
+(11, 7, now()),
+(11, 8, now()),
+(11, 9, now()),
+(11, 10, now());
 
 -- Posts
-INSERT INTO "posts" ("user_id", "s3_key", "title", "game", "body", "status", "likes") VALUES
-(1, 's3key_user1_1', 'First Post by User1', 'GameA', 'Content for first post by User1', 'live', 7),
-(1, 's3key_user1_2', 'Second Post by User1', 'GameA', 'Content for second post by User2', 'live', 6),
-(1, 's3key_user1_3', 'Third Post by User1', 'GameA', 'Content for first post by User3', 'live', 5),
-(2, 's3key_user2_1', 'First Post by User2', 'GameG', 'Content for first post by User2', 'live', 4),
-(2, 's3key_user2_2', 'Second Post by User2', 'GameH', 'Content for second post by User2', 'live', 3),
-(2, 's3key_user2_3', 'Third Post by User2', 'Valorant', 'Content for post by User2', 'live', 3),
-(3, 's3key_user3_1', 'First Post by User3', 'Valorant', 'Content for post by User3', 'live', 3),
-(3, 's3key_user3_2', 'Second Post by User3', 'Valorant', 'Content for post by User3', 'live', 3),
-(5, 's3key_user5_1', 'First Post by User5', 'Valorant', 'Content for post by User5', 'live', 3),
-(5, 's3key_user5_2', 'Second Post by User5', 'Valorant', 'Content for post by User', 'live', 3),
-(6, 's3key_user6_1', 'First Post by User6', 'Valorant', 'Content for post by User6', 'live', 0),
-(6, 's3key_user6_2', 'Second Post by User6', 'Valorant', 'Content for post by User6', 'live', 0),
-(7, 's3key_user7_1', 'First Post by User7', 'Valorant', 'Content for post by User7', 'live', 0),
-(7, 's3key_user7_2', 'Second Post by User7', 'Valorant', 'Content for post by User7', 'live', 0),
-(8, 's3key_user8_1', 'First Post by User8', 'Valorant', 'Content for post by User8', 'live', 0),
-(8, 's3key_user8_2', 'Second Post by User8', 'Valorant', 'Content for post by User8', 'live', 0),
-(9, 's3key_org9_1', 'First Post by Org9', 'GameA', 'Content for first post by Org9', 'live', 0),
-(9, 's3key_org9_2', 'Second Post by Org9', 'GameB', 'Content for second post by Org9', 'archived', 0),
-(10, 's3key_org10_1', 'First Post by Org10', 'GameC', 'Content for first post by Org10', 'reported', 0),
-(10, 's3key_org10_2', 'Second Post by Org10', 'GameD', 'Content for second post by Org10', 'live', 0);
+INSERT INTO "posts" ("user_id", "s3_key", "media", "title", "game", "body", "status", "likes") VALUES
+(1, 's3key_user1_1', 'none', 'First Post by User1', 'GameA', 'Content for first post by User1', 'live', 7),
+(1, 's3key_user1_2', 'none', 'Second Post by User1', 'GameA', 'Content for second post by User2', 'live', 6),
+(1, 's3key_user1_3', 'none', 'Third Post by User1', 'GameA', 'Content for first post by User3', 'live', 5),
+(2, 's3key_user2_1', 'none', 'First Post by User2', 'GameG', 'Content for first post by User2', 'live', 4),
+(2, 's3key_user2_2', 'none', 'Second Post by User2', 'GameH', 'Content for second post by User2', 'live', 3),
+(2, 's3key_user2_3', 'none', 'Third Post by User2', 'Valorant', 'Content for post by User2', 'live', 3),
+(3, 's3key_user3_1', 'none', 'First Post by User3', 'Valorant', 'Content for post by User3', 'live', 3),
+(3, 's3key_user3_2', 'none', 'Second Post by User3', 'Valorant', 'Content for post by User3', 'live', 3),
+(5, 's3key_user5_1', 'none', 'First Post by User5', 'Valorant', 'Content for post by User5', 'live', 3),
+(5, 's3key_user5_2', 'none', 'Second Post by User5', 'Valorant', 'Content for post by User', 'live', 3),
+(6, 's3key_user6_1', 'none', 'First Post by User6', 'Valorant', 'Content for post by User6', 'live', 0),
+(6, 's3key_user6_2', 'none', 'Second Post by User6', 'Valorant', 'Content for post by User6', 'live', 0),
+(7, 's3key_user7_1', 'none', 'First Post by User7', 'Valorant', 'Content for post by User7', 'live', 0),
+(7, 's3key_user7_2', 'none', 'Second Post by User7', 'Valorant', 'Content for post by User7', 'live', 0),
+(8, 's3key_user8_1', 'none', 'First Post by User8', 'Valorant', 'Content for post by User8', 'live', 0),
+(8, 's3key_user8_2', 'none', 'Second Post by User8', 'Valorant', 'Content for post by User8', 'live', 0),
+(9, 's3key_org9_1', 'none', 'First Post by Org9', 'GameA', 'Content for first post by Org9', 'live', 0),
+(9, 's3key_org9_2', 'none', 'Second Post by Org9', 'GameB', 'Content for second post by Org9', 'archived', 0),
+(10, 's3key_org10_1', 'none', 'First Post by Org10', 'GameC', 'Content for first post by Org10', 'reported', 0),
+(10, 's3key_org10_2', 'none', 'Second Post by Org10', 'GameD', 'Content for second post by Org10', 'live', 0);
 
 
 INSERT INTO liked_posts (user_id, post_id) VALUES 

@@ -1,7 +1,0 @@
-docker run --name dev-db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres
-
-docker exec -it dev-db psql -U postgres -c "CREATE DATABASE joystiq;"
-
-docker exec -i dev-db psql -U postgres -d joystiq < ./temp.sql
-
-docker exec -i dev-db psql -U postgres -d joystiq < ./schema.sql
