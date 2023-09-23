@@ -56,7 +56,6 @@ func CreatePost(db *sql.DB) fiber.Handler {
 			UserID: currentUserId,
 			S3Key:  requestBody.S3Key,
 			Media:  media,
-			Title:  requestBody.Title,
 			Game:   requestBody.Game,
 			Body:   requestBody.Body,
 			Status: status,
@@ -66,8 +65,8 @@ func CreatePost(db *sql.DB) fiber.Handler {
 		sb := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
 
 		query := sb.Insert("posts").
-			Columns("user_id", "s3_key", "media", "title", "game", "body", "status").
-			Values(post.UserID, post.S3Key, post.Media, post.Title, post.Game, post.Body, post.Status).
+			Columns("user_id", "s3_key", "media", "game", "body", "status").
+			Values(post.UserID, post.S3Key, post.Media, post.Game, post.Body, post.Status).
 			Suffix("RETURNING id, created_at, updated_at")
 
 		sql, args, err := query.ToSql()

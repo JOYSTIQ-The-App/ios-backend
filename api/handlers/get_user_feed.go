@@ -48,7 +48,7 @@ func GetUserFeed(db *sql.DB) fiber.Handler {
 		var sb = sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
 
 		// Build the query using Squirrel
-		query := sb.Select("id", "user_id", "s3_key", "media", "title", "game", "body", "status", "likes", "created_at").
+		query := sb.Select("id", "user_id", "s3_key", "media", "game", "body", "status", "likes", "created_at").
 			From("posts").
 			Where(sq.Eq{"user_id": followedUserIds}).
 			OrderBy("created_at DESC").
@@ -73,7 +73,7 @@ func GetUserFeed(db *sql.DB) fiber.Handler {
 		// Scan the results into a slice of Post structs
 		for rows.Next() {
 			var post models.Post
-			if err := rows.Scan(&post.ID, &post.UserID, &post.S3Key, &post.Media, &post.Title, &post.Game, &post.Body, &post.Status, &post.Likes, &post.CreatedAt); err != nil {
+			if err := rows.Scan(&post.ID, &post.UserID, &post.S3Key, &post.Media, &post.Game, &post.Body, &post.Status, &post.Likes, &post.CreatedAt); err != nil {
 				log.Println(err)
 				return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 			}

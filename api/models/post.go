@@ -10,7 +10,6 @@ type Post struct {
 	UserID     int            `db:"user_id" json:"user_id"`
 	S3Key      sql.NullString `db:"s3_key" json:"s3_key"`
 	Media      MediaType      `db:"media" json:"media"`
-	Title      string         `db:"title" json:"title"`
 	Game       string         `db:"game" json:"game"`
 	Body       string         `db:"body" json:"body"`
 	Status     StatusType     `db:"status" json:"status"`

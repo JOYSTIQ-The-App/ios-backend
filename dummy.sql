@@ -28,39 +28,39 @@ INSERT INTO "follows" ("following_user_id", "followed_user_id", "created_at") VA
 (11, 13, now());
 
 -- Content Posts
-INSERT INTO "posts" ("user_id", "media", "title", "game", "body", "status", "likes") VALUES
-(1, 'none', 'First Post by User1', 'GameA', 'Content for first post by User1', 'live', 7),
-(1, 'none', 'Second Post by User1', 'GameA', 'Content for second post by User2', 'live', 6),
-(1, 'none', 'Third Post by User1', 'GameA', 'Content for first post by User3', 'live', 5),
-(2, 'none', 'First Post by User2', 'GameG', 'Content for first post by User2', 'live', 4),
-(2, 'none', 'Second Post by User2', 'GameH', 'Content for second post by User2', 'live', 3),
-(2, 'none', 'Third Post by User2', 'Valorant', 'Content for post by User2', 'live', 3),
-(3, 'none', 'First Post by User3', 'Valorant', 'Content for post by User3', 'live', 3),
-(3, 'none', 'Second Post by User3', 'Valorant', 'Content for post by User3', 'live', 3),
-(5, 'none', 'First Post by User5', 'Valorant', 'Content for post by User5', 'live', 3),
-(5, 'none', 'Second Post by User5', 'Valorant', 'Content for post by User', 'live', 3),
-(6, 'none', 'First Post by User6', 'Valorant', 'Content for post by User6', 'live', 0),
-(6, 'none', 'Second Post by User6', 'Valorant', 'Content for post by User6', 'live', 0),
-(7, 'none', 'First Post by User7', 'Valorant', 'Content for post by User7', 'live', 0),
-(7, 'none', 'Second Post by User7', 'Valorant', 'Content for post by User7', 'live', 0),
-(8, 'none', 'First Post by User8', 'Valorant', 'Content for post by User8', 'live', 0),
-(8, 'none', 'Second Post by User8', 'Valorant', 'Content for post by User8', 'live', 0),
-(9, 'none', 'First Post by Org9', 'GameA', 'Content for first post by Org9', 'live', 0),
-(9, 'none', 'Second Post by Org9', 'GameB', 'Content for second post by Org9', 'archived', 0),
-(10, 'none', 'First Post by Org10', 'GameC', 'Content for first post by Org10', 'reported', 0),
-(10, 'none', 'Second Post by Org10', 'GameD', 'Content for second post by Org10', 'live', 0),
-(13, 'none', 'Val update 2.0', 'Valorant', 'This new val update sucks', 'live', 0),
-(13, 'video', 'Something', 'GameD', 'This isnt gaming content', 'live', 0);
+INSERT INTO "posts" ("user_id", "media", "game", "body", "status", "likes") VALUES
+(1, 'none', 'GameA', 'Content for first post by User1', 'live', 7),
+(1, 'none', 'GameA', 'Content for second post by User2', 'live', 6),
+(1, 'none', 'GameA', 'Content for first post by User3', 'live', 5),
+(2, 'none', 'GameG', 'Content for first post by User2', 'live', 4),
+(2, 'none', 'GameH', 'Content for second post by User2', 'live', 3),
+(2, 'none', 'Valorant', 'Content for post by User2', 'live', 3),
+(3, 'none', 'Valorant', 'Content for post by User3', 'live', 3),
+(3, 'none', 'Valorant', 'Content for post by User3', 'live', 3),
+(5, 'none', 'Valorant', 'Content for post by User5', 'live', 3),
+(5, 'none', 'Valorant', 'Content for post by User', 'live', 3),
+(6, 'none', 'Valorant', 'Content for post by User6', 'live', 0),
+(6, 'none', 'Valorant', 'Content for post by User6', 'live', 0),
+(7, 'none', 'Valorant', 'Content for post by User7', 'live', 0),
+(7, 'none', 'Valorant', 'Content for post by User7', 'live', 0),
+(8, 'none', 'Valorant', 'Content for post by User8', 'live', 0),
+(8, 'none', 'Valorant', 'Content for post by User8', 'live', 0),
+(9, 'none', 'GameA', 'Content for first post by Org9', 'live', 0),
+(9, 'none', 'GameB', 'Content for second post by Org9', 'archived', 0),
+(10, 'none', 'GameC', 'Content for first post by Org10', 'reported', 0),
+(10, 'none', 'GameD', 'Content for second post by Org10', 'live', 0),
+(13, 'none', 'GameD', 'This new val update sucks', 'live', 0),
+(13, 'video', 'GameD', 'This isnt gaming content', 'live', 0);
 
 -- Discussion Posts
-INSERT INTO "posts" ("user_id", "s3_key", "media", "title", "game", "body", "status", "likes") VALUES
-(13, 'RPReplay_Final1646032101.mov', 'video', 'My first post!', 'Valorant', 'This is a sick fucking clip', 'live', 0),
-(13, 'Valorant 2022.05.17 - 02.10.12.02.DVR_Trim.mov', 'video', 'Sick clip 1', 'GameD', 'Check out this clip!', 'live', 0),
-(13, 'Valorant 2022.05.19 - 21.12.05.02.DVR_Trim.mov', 'video', 'Sick clip 2', 'GameD', 'Check out this clip!', 'live', 0),
-(13, 'Valorant 2022.06.14 - 22.36.27.03.DVR_Trim.mov', 'video', 'Sick clip 3', 'GameD', 'Check out this clip!', 'live', 0),
-(13, 'Valorant 2022.08.20 - 23.00.43.04.DVR_Trim.mov', 'video', 'Sick clip 4', 'GameD', 'Check out this clip!', 'live', 0),
-(13, 'Valorant 2022.08.20 - 22.51.58.03.DVR_Trim.mov', 'video', 'Sick clip 5', 'GameD', 'Check out this clip!', 'live', 0),
-(13, 'Valorant 2022.07.28 - 16.43.08.02.DVR_Trim_Trim.mov', 'video', 'Sick clip 6', 'GameD', 'Check out this clip!', 'live', 0);
+INSERT INTO "posts" ("user_id", "s3_key", "media", "game", "body", "status", "likes") VALUES
+(13, 'RPReplay_Final1646032101.mov', 'video', 'Valorant', 'This is a sick fucking clip', 'live', 0),
+(13, 'Valorant 2022.05.17 - 02.10.12.02.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', 0),
+(13, 'Valorant 2022.05.19 - 21.12.05.02.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', 0),
+(13, 'Valorant 2022.06.14 - 22.36.27.03.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', 0),
+(13, 'Valorant 2022.08.20 - 23.00.43.04.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', 0),
+(13, 'Valorant 2022.08.20 - 22.51.58.03.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', 0),
+(13, 'Valorant 2022.07.28 - 16.43.08.02.DVR_Trim_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', 0);
 
 
 
