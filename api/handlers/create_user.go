@@ -9,6 +9,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// TO DO: Add Account. Currently it is defaulted to "public"
 func CreateUser(db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		userEmail := c.Query("email")

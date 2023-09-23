@@ -11,12 +11,12 @@ import (
 )
 
 type PostRequestBody struct {
-	S3Key  string `json:"s3_key"`
-	Media  string `json:"media"`
-	Title  string `json:"title"`
-	Game   string `json:"game"`
-	Body   string `json:"body"`
-	Status string `json:"status"`
+	S3Key  sql.NullString `json:"s3_key"`
+	Media  string         `json:"media"`
+	Title  string         `json:"title"`
+	Game   string         `json:"game"`
+	Body   string         `json:"body"`
+	Status string         `json:"status"`
 }
 
 func CreatePost(db *sql.DB) fiber.Handler {

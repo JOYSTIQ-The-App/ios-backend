@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/JOYSTIQ-The-App/Backend/api/handlers"
+	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
 	_ "github.com/lib/pq"
 )
@@ -23,14 +24,19 @@ func main() {
 
 	log.Println("Successfully connected to the database!")
 
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		JSONEncoder: json.Marshal,
+		JSONDecoder: json.Unmarshal,
+	})
 
-	app.Get("handlers/get_user_feed", handlers.GetUserFeed(db))
 	app.Get("handlers/get_global_feed", handlers.GetGlobalFeed(db))
 	app.Get("handlers/get_leaderboard_feed", handlers.GetLeaderboardFeed(db))
+	app.Get("handlers/get_user_feed", handlers.GetUserFeed(db))
+	app.Get("handlers/get_username", handlers.GetUsername(db))
 
-	app.Post("handlers/create_user", handlers.CreateUser(db))
+	app.Post("handlers/create_like", handlers.CreateLike(db))
 	app.Post("handlers/create_post", handlers.CreatePost(db))
+	app.Post("handlers/create_user", handlers.CreateUser(db))
 
 	log.Fatal(app.Listen(":8080"))
 }
