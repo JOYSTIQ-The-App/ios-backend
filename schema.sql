@@ -45,7 +45,6 @@ CREATE TABLE "posts" (
   "user_id" integer,
   "s3_key" varchar(255) DEFAULT null,
   "media" media_type NOT NULL,
-  "title" varchar(100),
   "game" varchar(100),
   "body" text,
   "status" status_type DEFAULT 'live',
