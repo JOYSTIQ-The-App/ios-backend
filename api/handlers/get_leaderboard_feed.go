@@ -46,7 +46,7 @@ func GetLeaderboardFeed(db *sql.DB) fiber.Handler {
 		defer rows.Close()
 
 		// Scan the results into a slice of Post structs
-		var posts []models.Post
+		posts := make([]models.Post, 0)
 		for rows.Next() {
 			var post models.Post
 			if err := rows.Scan(&post.ID, &post.UserID, &post.S3Key, &post.Media, &post.Game, &post.Body, &post.Status, &post.CreatedAt, &post.LikesCount); err != nil {

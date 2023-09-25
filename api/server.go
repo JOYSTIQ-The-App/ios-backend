@@ -33,6 +33,7 @@ func main() {
 	app.Get("handlers/get_leaderboard_feed", handlers.GetLeaderboardFeed(db))
 	app.Get("handlers/get_user_feed", handlers.GetUserFeed(db))
 	app.Get("handlers/get_username", handlers.GetUsername(db))
+	app.Get("handlers/search_usernames", handlers.SearchUsernames(db))
 
 	app.Post("handlers/create_like", handlers.CreateLike(db))
 	app.Post("handlers/create_post", handlers.CreatePost(db))

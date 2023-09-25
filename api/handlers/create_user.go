@@ -4,48 +4,73 @@ import (
 	"database/sql"
 	"log"
 
+	"github.com/JOYSTIQ-The-App/Backend/api/models"
 	"github.com/JOYSTIQ-The-App/Backend/api/parsers"
 	sq "github.com/Masterminds/squirrel"
 	"github.com/gofiber/fiber/v2"
 )
 
+type UserRequestBody struct {
+	Email    string `json:"email"`
+	Username string `json:"username"`
+	Role     string `json:"role"`
+	Account  string `json:"account"`
+}
+
 // TO DO: Add Account. Currently it is defaulted to "public"
 func CreateUser(db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		userEmail := c.Query("email")
-		userName := c.Query("username")
+		// Parse body to get user details
+		var requestBody UserRequestBody
+		if err := c.BodyParser(&requestBody); err != nil {
+			log.Println(err)
+			return c.Status(fiber.StatusBadRequest).SendString("Failed to parse request body.")
+		}
 
-		roleStr := c.Query("role")
-		userRole, err := parsers.ParseRoleType(roleStr)
+		// Validate account and role using parsers
+		account, err := parsers.ParseAccountType(requestBody.Account)
 		if err != nil {
 			log.Println(err)
-			return c.Status(fiber.StatusBadRequest).SendString("Invalid role type provided")
+			return c.Status(fiber.StatusBadRequest).SendString("Invalid account type.")
 		}
 
-		// Create the Squirrel statement builder with PostgreSQL dollar format
-		var sb = sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
+		role, err := parsers.ParseRoleType(requestBody.Role)
+		if err != nil {
+			log.Println(err)
+			return c.Status(fiber.StatusBadRequest).SendString("Invalid role type.")
+		}
 
-		// Build the INSERT query
-		query := sb.Insert("users").Columns("email", "username", "role").
-			Values(userEmail, userName, userRole).
+		// Construct the Post model
+		user := models.User{
+			Email:    requestBody.Email,
+			Username: requestBody.Username,
+			Role:     role,
+			Account:  account,
+		}
+
+		// Insert new post into the database using Squirrel
+		sb := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
+
+		query := sb.Insert("users").
+			Columns("email", "username", "role", "account").
+			Values(user.Email, user.Username, user.Role, user.Account).
 			Suffix("RETURNING id")
 
-		// Pepare and execute the query
-		sqlQuery, args, err := query.ToSql()
+		sql, args, err := query.ToSql()
 		if err != nil {
-			log.Println("Prepare query failed", err)
-			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+			log.Println(err)
+			return c.Status(fiber.StatusInternalServerError).SendString("Failed to build query.")
 		}
 
-		var userId int
-		if err := db.QueryRow(sqlQuery, args...).Scan(&userId); err != nil {
-			log.Println("Execution failed", err)
-			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+		err = db.QueryRow(sql, args...).Scan(&user.ID)
+		if err != nil {
+			log.Println(err)
+			return c.Status(fiber.StatusInternalServerError).SendString("Failed to create user.")
 		}
 
 		return c.JSON(fiber.Map{
 			"status":  "success",
-			"user_id": userId,
+			"user_id": user.ID,
 		})
 	}
 }
