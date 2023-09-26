@@ -71,5 +71,21 @@ func main() {
 	// // Comments
 	// app.Post("/comments", handlers.CreateComment(db))
 
+	// Initialize the cron package
+	// c := cron.New(cron.WithSeconds())
+	// _, err = c.AddFunc("0 0 * * * *", func() { // This runs every hour at minute 0. Adjust as necessary.
+	//     log.Println("Running the UpdateLikesCount job...")
+	//     handler := handlers.UpdateLikesCount(db)
+	//     // Since this handler expects a fiber context (which isn't available in this cron function),
+	//     // you might want to refactor your handler function to work without the context when called from cron.
+	//     handler(nil)
+	// })
+
+	// if err != nil {
+	//     log.Fatalf("Error scheduling cron job: %v", err)
+	// }
+
+	// c.Start()
+
 	log.Fatal(app.Listen(":8080"))
 }
