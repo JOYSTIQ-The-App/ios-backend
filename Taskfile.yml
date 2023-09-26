@@ -27,6 +27,11 @@ tasks:
     desc: Run the test.sql file on the postgres container
     cmds:
       - docker exec -i alpha-db psql -U postgres -d joystiq < ./test.sql
+  
+  temp:
+    desc: Run the test.sql file on the postgres container
+    cmds:
+      - docker exec -i alpha-db psql -U postgres -d joystiq < ./temp.sql
 
   start:
     desc: Stop the postgres docker container
