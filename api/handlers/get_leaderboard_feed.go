@@ -24,7 +24,10 @@ func GetLeaderboardFeed(db *sql.DB) fiber.Handler {
 		query := sb.Select("p.id", "p.user_id", "p.s3_key", "p.media", "p.game", "p.body", "p.status", "p.created_at", "COUNT(lp.post_id) AS likes_count").
 			From("posts p").
 			Join("liked_posts lp ON p.id = lp.post_id").
-			Where("lp.created_at >= ?", lastSunday).
+			Where(sq.And{
+				sq.GtOrEq{"lp.created_at": lastSunday},
+				sq.Eq{"p.media": "video"},
+			}).
 			GroupBy("p.id", "p.user_id", "p.s3_key", "p.media", "p.game", "p.body", "p.status", "p.created_at").
 			OrderBy("likes_count DESC").
 			Limit(10)
