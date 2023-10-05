@@ -36,3 +36,15 @@ const (
 	Private AccountType = "Private"
 	Hidden  AccountType = "hidden"
 )
+
+// SocialType enum
+type SocialType string
+
+const (
+	Discord     SocialType = "discord"
+	Kick        SocialType = "kick"
+	Twitch      SocialType = "twitch"
+	Youtube     SocialType = "youtube"
+	Xbox        SocialType = "xbox"
+	Playstation SocialType = "playstation"
+)

@@ -75,7 +75,7 @@ func CreatePost(db *sql.DB) fiber.Handler {
 			return c.Status(fiber.StatusInternalServerError).SendString("Failed to build query.")
 		}
 
-		err = db.QueryRow(sql, args...).Scan(&post.ID, &post.CreatedAt, &post.UpdatedAt)
+		err = db.QueryRow(sql, args...).Scan(&post.ID)
 		if err != nil {
 			log.Println(err)
 			return c.Status(fiber.StatusInternalServerError).SendString("Failed to create post.")

@@ -1,12 +1,13 @@
 module github.com/JOYSTIQ-The-App/Backend/api
 
-go 1.21.1
+go 1.21
 
 require (
 	github.com/Masterminds/squirrel v1.5.4
 	github.com/goccy/go-json v0.10.2
 	github.com/gofiber/fiber/v2 v2.49.1
 	github.com/lib/pq v1.10.9
+	github.com/robfig/cron/v3 v3.0.1
 )
 
 require (
