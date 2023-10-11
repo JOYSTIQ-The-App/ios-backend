@@ -4,7 +4,7 @@
 
 select * from posts;
 
-select * from liked_posts;
+-- select * from liked_posts;
 
 -- select * from comments;
 

@@ -21,10 +21,11 @@ func GetPostComments(db *sql.DB) fiber.Handler {
 		var sb = sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
 
 		// Build the query using Squirrel
-		query := sb.Select("id", "post_id", "user_id", "text", "created_at").
-			From("comments").
-			Where(sq.Eq{"post_id": postID}).
-			OrderBy("created_at ASC")
+		query := sb.Select("c.id", "c.post_id", "c.user_id", "u.username", "c.text", "c.created_at").
+			From("comments c").
+			Join("users u ON c.user_id = u.id").
+			Where(sq.Eq{"c.post_id": postID}).
+			OrderBy("c.created_at ASC")
 
 		// Prepare and execute the query
 		sqlQuery, args, err := query.ToSql()
@@ -40,11 +41,16 @@ func GetPostComments(db *sql.DB) fiber.Handler {
 		}
 		defer rows.Close()
 
-		// Scan the results into a slice of Comment structs
-		comments := make([]models.Comment, 0)
+		// Define a struct to hold the comment data including the username
+		type CommentWithUsername struct {
+			models.Comment
+			Username string `json:"username"`
+		}
+
+		comments := make([]CommentWithUsername, 0)
 		for rows.Next() {
-			var comment models.Comment
-			if err := rows.Scan(&comment.ID, &comment.PostID, &comment.UserID, &comment.Text, &comment.CreatedAt); err != nil {
+			var comment CommentWithUsername
+			if err := rows.Scan(&comment.ID, &comment.PostID, &comment.UserID, &comment.Username, &comment.Text, &comment.CreatedAt); err != nil {
 				log.Println(err)
 				return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 			}

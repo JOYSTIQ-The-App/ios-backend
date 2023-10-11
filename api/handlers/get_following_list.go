@@ -51,7 +51,7 @@ func GetFollowingList(db *sql.DB) fiber.Handler {
 		defer rows.Close()
 
 		// Parse the list of usernames the user is following
-		var followingUsernames []string
+		followingUsernames := make([]string, 0)
 		for rows.Next() {
 			var followingUsername string
 			if err := rows.Scan(&followingUsername); err != nil {
@@ -61,8 +61,6 @@ func GetFollowingList(db *sql.DB) fiber.Handler {
 			followingUsernames = append(followingUsernames, followingUsername)
 		}
 
-		return c.JSON(fiber.Map{
-			"following": followingUsernames,
-		})
+		return c.JSON(followingUsernames)
 	}
 }

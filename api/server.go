@@ -30,7 +30,6 @@ func main() {
 	// Update Comments Cron Job
 	updateCommentsCron := cron.New(cron.WithSeconds())
 	_, err = updateCommentsCron.AddFunc("*/10 * * * * *", func() {
-		log.Println("Running the UpdateCommentsCount job...")
 		err := jobs.UpdateCommentCounts(db)
 		if err != nil {
 			log.Println("Error running UpdateCommentCounts:", err)
@@ -46,7 +45,6 @@ func main() {
 	// Update Comments Cron Job
 	updateLikesCron := cron.New(cron.WithSeconds())
 	_, err = updateLikesCron.AddFunc("*/10 * * * * *", func() {
-		log.Println("Running the UpdateLikesCount job...")
 		err := jobs.UpdateLikesCount(db)
 		if err != nil {
 			log.Println("Error running UpdateLikesCount:", err)
@@ -82,6 +80,8 @@ func main() {
 	app.Get("handlers/get_following_list", handlers.GetFollowingList(db))
 	app.Get("handlers/get_user_avatar", handlers.GetUserAvatar(db))
 	app.Get("handlers/get_user_socials", handlers.GetUserSocials(db))
+	app.Get("/handlers/check_username_availability", handlers.CheckUsernameAvailability(db))
+	app.Get("/handlers/is_email_registered", handlers.IsEmailRegistered(db))
 
 	app.Post("handlers/create_like", handlers.CreateLike(db))
 	app.Post("handlers/create_post", handlers.CreatePost(db))
@@ -93,6 +93,8 @@ func main() {
 	app.Patch("handlers/update_user_post", handlers.UpdateUserPost(db))
 	app.Patch("handlers/update_user_avatar", handlers.UpdateUserAvatar(db))
 	app.Patch("handlers/update_user_socials", handlers.UpdateUserSocials(db))
+	app.Patch("handlers/update_username", handlers.UpdateUsername(db))
+	app.Patch("handlers/report_post", handlers.ReportPost(db))
 
 	// // Likes
 	// app.Delete("/likes", handlers.DeleteLike(db))

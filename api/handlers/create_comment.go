@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/JOYSTIQ-The-App/Backend/api/models"
+	"github.com/JOYSTIQ-The-App/Backend/api/services"
 	sq "github.com/Masterminds/squirrel"
 	"github.com/gofiber/fiber/v2"
 )
@@ -14,6 +15,11 @@ type CommentRequestBody struct {
 	PostID   int    `json:"post_id"`
 	Username string `json:"username"`
 	Text     string `json:"text"`
+}
+
+type CommentResponse struct {
+	models.Comment
+	Username string `json:"username"`
 }
 
 func CreateComment(db *sql.DB) fiber.Handler {
@@ -29,6 +35,12 @@ func CreateComment(db *sql.DB) fiber.Handler {
 		trimmedText := strings.TrimSpace(requestBody.Text)
 		if len(trimmedText) == 0 || len(trimmedText) > 500 {
 			return c.Status(fiber.StatusBadRequest).SendString("Invalid comment text length.")
+		}
+
+		// Ensure there is no profanity
+		detector := services.CustomProfanityDetector()
+		if detector.IsProfane(trimmedText) {
+			trimmedText = detector.Censor(trimmedText)
 		}
 
 		// Fetch UserID based on the provided Username
@@ -60,7 +72,7 @@ func CreateComment(db *sql.DB) fiber.Handler {
 		query := sb.Insert("comments").
 			Columns("post_id", "user_id", "text").
 			Values(comment.PostID, comment.UserID, comment.Text).
-			Suffix("RETURNING id, created_at, updated_at")
+			Suffix("RETURNING id, created_at")
 
 		sql, args, err := query.ToSql()
 		if err != nil {
@@ -68,12 +80,16 @@ func CreateComment(db *sql.DB) fiber.Handler {
 			return c.Status(fiber.StatusInternalServerError).SendString("Failed to build query.")
 		}
 
-		err = db.QueryRow(sql, args...).Scan(&comment.ID, &comment.CreatedAt, &comment.UpdatedAt)
+		err = db.QueryRow(sql, args...).Scan(&comment.ID, &comment.CreatedAt)
 		if err != nil {
 			log.Println(err)
 			return c.Status(fiber.StatusInternalServerError).SendString("Failed to create comment.")
 		}
 
-		return c.JSON(comment)
+		response := CommentResponse{
+			Comment:  comment,
+			Username: requestBody.Username,
+		}
+		return c.JSON(response)
 	}
 }

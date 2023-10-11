@@ -12,6 +12,8 @@ import (
 func GetGlobalFeed(db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		email := c.Query("email")
+		lastSeenCreatedAt := c.Query("last_seen_created_at")
+
 		if email == "" {
 			return c.Status(fiber.StatusBadRequest).SendString("Email not provided.")
 		}
@@ -36,6 +38,11 @@ func GetGlobalFeed(db *sql.DB) fiber.Handler {
 			OrderBy("p.created_at DESC").
 			Limit(10)
 
+		// Only add this WHERE condition if lastSeenCreatedAt is not empty
+		if lastSeenCreatedAt != "" {
+			query = query.Where(sq.Lt{"p.created_at": lastSeenCreatedAt})
+		}
+
 		// Prepare and execute the query
 		sqlQuery, args, err := query.ToSql()
 		if err != nil {
@@ -51,7 +58,7 @@ func GetGlobalFeed(db *sql.DB) fiber.Handler {
 		defer rows.Close()
 
 		// Scan the results into a slice of Post structs
-		var posts []models.FeedPost
+		posts := make([]models.FeedPost, 0)
 		for rows.Next() {
 			var post models.FeedPost
 			if err := rows.Scan(&post.ID, &post.UserID, &post.S3Key, &post.Media, &post.Game, &post.Body, &post.Status, &post.Likes, &post.Comments, &post.CreatedAt, &post.UserLiked); err != nil {

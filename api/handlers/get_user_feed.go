@@ -12,6 +12,12 @@ import (
 func GetUserFeed(db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		userEmail := c.Query("email")
+		lastSeenCreatedAt := c.Query("last_seen_created_at")
+
+		// Validation
+		if userEmail == "" {
+			return c.Status(fiber.StatusBadRequest).SendString("Email is required.")
+		}
 
 		// Get user ID of the user with the given email
 		var currentUserId int
@@ -39,7 +45,7 @@ func GetUserFeed(db *sql.DB) fiber.Handler {
 		rows.Close()
 
 		// Check if there are any followed user IDs
-		var posts []models.FeedPost
+		posts := make([]models.FeedPost, 0)
 		if len(followedUserIds) == 0 {
 			return c.JSON(posts)
 		}
@@ -56,6 +62,11 @@ func GetUserFeed(db *sql.DB) fiber.Handler {
 			Where(sq.Eq{"posts.user_id": followedUserIds}).
 			OrderBy("created_at DESC").
 			Limit(10)
+
+		// Only add this WHERE condition if lastSeenCreatedAt is not empty
+		if lastSeenCreatedAt != "" {
+			query = query.Where(sq.Lt{"posts.created_at": lastSeenCreatedAt})
+		}
 
 		// Prepare and execute the query
 		sqlQuery, args, err := query.ToSql()

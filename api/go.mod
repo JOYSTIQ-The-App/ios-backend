@@ -4,6 +4,7 @@ go 1.21
 
 require (
 	github.com/Masterminds/squirrel v1.5.4
+	github.com/TwiN/go-away v1.6.11
 	github.com/goccy/go-json v0.10.2
 	github.com/gofiber/fiber/v2 v2.49.1
 	github.com/lib/pq v1.10.9
@@ -24,4 +25,5 @@ require (
 	github.com/valyala/fasthttp v1.49.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	golang.org/x/sys v0.11.0 // indirect
+	golang.org/x/text v0.13.0 // indirect
 )

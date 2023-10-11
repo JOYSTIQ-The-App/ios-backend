@@ -51,7 +51,7 @@ func GetFollowersList(db *sql.DB) fiber.Handler {
 		defer rows.Close()
 
 		// Parse the list of follower usernames
-		var followerUsernames []string
+		followerUsernames := make([]string, 0)
 		for rows.Next() {
 			var followerUsername string
 			if err := rows.Scan(&followerUsername); err != nil {
@@ -61,8 +61,6 @@ func GetFollowersList(db *sql.DB) fiber.Handler {
 			followerUsernames = append(followerUsernames, followerUsername)
 		}
 
-		return c.JSON(fiber.Map{
-			"followers": followerUsernames,
-		})
+		return c.JSON(followerUsernames)
 	}
 }

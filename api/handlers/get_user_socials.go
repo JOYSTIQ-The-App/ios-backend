@@ -50,7 +50,7 @@ func GetUserSocials(db *sql.DB) fiber.Handler {
 		defer rows.Close()
 
 		// Parse results into a map of socials
-		userSocials := make(map[string]string)
+		userSocials := make(map[string]string, 0)
 		for rows.Next() {
 			var socialType, socialUsername string
 			if err := rows.Scan(&socialType, &socialUsername); err != nil {
@@ -58,10 +58,6 @@ func GetUserSocials(db *sql.DB) fiber.Handler {
 				return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 			}
 			userSocials[socialType] = socialUsername
-		}
-
-		if len(userSocials) == 0 {
-			return c.JSON(nil)
 		}
 
 		return c.JSON(userSocials)

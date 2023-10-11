@@ -10,9 +10,9 @@ INSERT INTO "users" ("email", "username", "role") VALUES
 ('user8@email.com', 'generalUser8', 'gamer'),
 ('org9@email.com', 'orgUser9', 'org'),
 ('org10@email.com', 'orgUser10', 'org'),
-('apical@example.com', 'apical', 'gamer'),
-('cotts@example.com', 'naratocotto', 'gamer'),
-('nooch@example.com', 'nooch', 'gamer'),
+('apical@example.com', 'Apical', 'gamer'),
+('cotts@example.com', 'Naratocotto', 'gamer'),
+('nooch@example.com', 'Nooch', 'gamer'),
 ('blackcat@example.com', 'black cat', 'gamer');
 
 -- Follows
@@ -34,10 +34,14 @@ INSERT INTO "follows" ("following_user_id", "followed_user_id", "created_at") VA
 (2, 1, now()),
 (3, 1, now()),
 (4, 1, now()),
+(11, 12, now()),
+(11, 2, now()),
+(11, 3, now()),
+(11, 4, now()),
 (5, 1, now());
 
 
--- Content Posts
+-- Discussion Posts
 INSERT INTO "posts" ("user_id", "media", "game", "body", "status", "created_at") VALUES
 (1, 'none', 'Valorant', 'This new valorant update sucks', 'live', now() - interval '4 days'),
 (1, 'none', 'LOL', 'This new league update sucks', 'live', now() - interval '8 days'),
@@ -47,31 +51,45 @@ INSERT INTO "posts" ("user_id", "media", "game", "body", "status", "created_at")
 (2, 'none', 'Valorant', 'Content for post by User2', 'live', now() - interval '3 days'),
 (3, 'none', 'Valorant', 'Content for post by User3', 'live', now() - interval '13 days'),
 (3, 'none', 'Valorant', 'Content for post by User3', 'live', now() - interval '4 hours'),
-(5, 'none', 'Valorant', 'Content for post by User5', 'live', now() - interval '8 hours'),
-(5, 'none', 'Valorant', 'Content for post by User', 'live', now() - interval '4 minutes'),
+(4, 'none', 'Valorant', 'Content for post by User4', 'live', now() - interval '4 minutes'),
+(4, 'none', 'Valorant', 'Content for post by User4', 'live', now() - interval '5 minutes'),
+(4, 'none', 'Valorant', 'Content for post by User4', 'live', now() - interval '6 minutes'),
+(4, 'none', 'Valorant', 'Content for post by User4', 'live', now() - interval '7 minutes'),
+(4, 'none', 'Valorant', 'Content for post by User4', 'live', now() - interval '8 minutes'),
+(4, 'none', 'Valorant', 'Content for post by User4', 'live', now() - interval '9 minutes'),
+(4, 'none', 'Valorant', 'Content for post by User4', 'live', now() - interval '1 minutes'),
+(4, 'none', 'Valorant', 'Content for post by User4', 'live', now() - interval '2 minutes'),
+(4, 'none', 'Valorant', 'Content for post by User4', 'live', now() - interval '3 minutes'),
+(4, 'none', 'Valorant', 'Content for post by User4', 'live', now() - interval '43 minutes'),
+(4, 'none', 'Valorant', 'Content for post by User4', 'live', now() - interval '10 minutes'),
+(4, 'none', 'Valorant', 'Content for post by User4', 'live', now() - interval '11 minutes'),
+(4, 'none', 'Valorant', 'Content for post by User4', 'live', now() - interval '12 minutes'),
+(4, 'none', 'Valorant', 'Content for post by User4', 'live', now() - interval '13 minutes'),
+(5, 'none', 'Valorant', 'Content for post by User5', 'live', now() - interval '19 minutes'),
+(5, 'none', 'Valorant', 'Content for post by User', 'live', now() - interval '46 minutes'),
 (6, 'none', 'Valorant', 'Content for post by User6', 'live', now() - interval '17 days'),
 (6, 'none', 'Valorant', 'Content for post by User6', 'live', now() - interval '32 minutes'),
-(7, 'none', 'Valorant', 'Content for post by User7', 'live', now() - interval '8 minutes'),
+(7, 'none', 'Valorant', 'Content for post by User7', 'live', now() - interval '18 minutes'),
 (7, 'none', 'Valorant', 'Content for post by User7', 'live', now() - interval '45 minutes'),
 (8, 'none', 'Valorant', 'Content for post by User8', 'live', now() - interval '7 days'),
-(8, 'none', 'Valorant', 'Content for post by User8', 'live', now() - interval '11 days'),
+(8, 'none', 'Valorant', 'Content for post by User8', 'live', now() - interval '19 days'),
 (9, 'none', 'GameA', 'Content for first post by Org9', 'live', now() - interval '40 minutes'),
 (9, 'none', 'GameB', 'Content for second post by Org9', 'archived', now() - interval '6 days'),
-(10, 'none', 'GameC', 'Content for first post by Org10', 'reported', now() - interval '7 days'),
+(10, 'none', 'GameC', 'Content for first post by Org10', 'reported', now() - interval '18 days'),
 (10, 'none', 'GameD', 'Content for second post by Org10', 'live', now() - interval '9 days'),
 (13, 'none', 'GameD', 'This new val update sucks', 'live', now() - interval '11 days'),
-(13, 'video', 'GameD', 'This isnt gaming content', 'live', now() - interval '33 minutes');
+(13, 'none', 'GameD', 'This isnt gaming content', 'live', now() - interval '33 minutes');
 
--- Discussion Posts
-INSERT INTO "posts" ("user_id", "s3_key", "media", "game", "body", "status", "created_at") VALUES
-(13, 'RPReplay_Final1646032101.mov', 'video', 'Valorant', 'This is a sick fucking clip', 'live', now() - interval '4 days'),
-(13, 'Valorant 2022.05.17 - 02.10.12.02.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '6 days'),
-(13, 'Valorant 2022.05.19 - 21.12.05.02.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '4 minutes'),
-(13, 'Valorant 2022.06.14 - 22.36.27.03.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '22 days'),
-(1, 'Valorant 2022.08.20 - 23.00.43.04.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '23 minutes'),
-(1, 'Valorant 2022.08.20 - 22.51.58.03.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '44 days'),
-(1, 'Valorant 2022.07.28 - 16.43.08.02.DVR_Trim_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '14 days'),
-(1, 'IMG_3412.png', 'photo', 'GameD', 'Check out this clip!', 'live', now());
+-- Content Posts
+-- INSERT INTO "posts" ("user_id", "s3_key", "media", "game", "body", "status", "created_at") VALUES
+-- (13, 'RPReplay_Final1646032101.mov', 'video', 'Valorant', 'This is a sick fucking clip', 'live', now() - interval '4 days'),
+-- (13, 'Valorant 2022.05.17 - 02.10.12.02.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '6 days'),
+-- (13, 'Valorant 2022.05.19 - 21.12.05.02.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '4 minutes'),
+-- (13, 'Valorant 2022.06.14 - 22.36.27.03.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '22 days'),
+-- (1, 'Valorant 2022.08.20 - 23.00.43.04.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '23 minutes'),
+-- (1, 'Valorant 2022.08.20 - 22.51.58.03.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '44 days'),
+-- (1, 'Valorant 2022.07.28 - 16.43.08.02.DVR_Trim_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '14 days'),
+-- (1, 'IMG_3412.png', 'photo', 'GameD', 'Check out this clip!', 'live', now());
 
 -- Liked Posts
 INSERT INTO liked_posts (user_id, post_id) VALUES 
@@ -114,13 +132,13 @@ INSERT INTO liked_posts (user_id, post_id) VALUES
 (3, 9),
 (1, 10),
 (2, 10),
-(3, 10),
-(1, 29),
-(1, 26),
-(1, 24),
-(1, 28),
-(1, 25),
-(1, 27);
+(3, 10);
+-- (1, 29),
+-- (1, 26),
+-- (1, 24),
+-- (1, 28),
+-- (1, 25),
+-- (1, 27);
 
 
 -- Comments
