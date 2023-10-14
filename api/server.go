@@ -121,5 +121,5 @@ func main() {
 	// // Comments
 	// app.Post("/comments", handlers.CreateComment(db))
 
-	log.Fatal(app.Listen(":8080"))
+	log.Fatal(app.Listen(":3000"))
 }
