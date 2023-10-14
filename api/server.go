@@ -82,6 +82,8 @@ func main() {
 	app.Get("handlers/get_user_socials", handlers.GetUserSocials(db))
 	app.Get("/handlers/check_username_availability", handlers.CheckUsernameAvailability(db))
 	app.Get("/handlers/is_email_registered", handlers.IsEmailRegistered(db))
+	app.Get("handlers/is_following", handlers.IsFollowing(db))
+	app.Get("handlers/get_user_bio", handlers.GetUserBio(db))
 
 	app.Post("handlers/create_like", handlers.CreateLike(db))
 	app.Post("handlers/create_post", handlers.CreatePost(db))

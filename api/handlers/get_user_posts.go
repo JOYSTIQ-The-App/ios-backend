@@ -33,8 +33,10 @@ func GetUserPosts(db *sql.DB) fiber.Handler {
 
 		// Retrieve the posts for the obtained user ID
 		query := sb.Select(
-			"posts.id", "posts.user_id", "s3_key", "media", "game", "body", "status", "likes", "comments", "posts.created_at").
+			"posts.id", "posts.user_id", "s3_key", "media", "game", "body", "status", "likes", "comments", "posts.created_at",
+			"CASE WHEN liked_posts.post_id IS NOT NULL THEN TRUE ELSE FALSE END as user_liked").
 			From("posts").
+			LeftJoin("liked_posts ON posts.id = liked_posts.post_id AND liked_posts.user_id = ?", userID).
 			Where(sq.Eq{"posts.user_id": userID}).
 			OrderBy("created_at DESC").
 			Limit(10)
@@ -54,10 +56,10 @@ func GetUserPosts(db *sql.DB) fiber.Handler {
 		defer rows.Close()
 
 		// Scan the results into a slice of Post structs
-		posts := make([]models.UserPost, 0)
+		posts := make([]models.FeedPost, 0)
 		for rows.Next() {
-			var post models.UserPost
-			if err := rows.Scan(&post.ID, &post.UserID, &post.S3Key, &post.Media, &post.Game, &post.Body, &post.Status, &post.Likes, &post.Comments, &post.CreatedAt); err != nil {
+			var post models.FeedPost
+			if err := rows.Scan(&post.ID, &post.UserID, &post.S3Key, &post.Media, &post.Game, &post.Body, &post.Status, &post.Likes, &post.Comments, &post.CreatedAt, &post.UserLiked); err != nil {
 				log.Println(err)
 				return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 			}

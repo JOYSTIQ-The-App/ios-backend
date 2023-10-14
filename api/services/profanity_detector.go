@@ -7,8 +7,6 @@ func CustomProfanityDetector() goaway.ProfanityDetector {
 		"cunt",
 		"fag",
 		"faggot",
-		"fuck",
-		"fucker",
 		"nigga",
 		"retard",
 		"retarded",

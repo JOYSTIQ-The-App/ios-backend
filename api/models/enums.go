@@ -48,3 +48,10 @@ const (
 	Xbox        SocialType = "xbox"
 	Playstation SocialType = "playstation"
 )
+
+type EnvironmentType string
+
+const (
+	Classic  EnvironmentType = "classic"
+	GameRoom EnvironmentType = "gameroom"
+)

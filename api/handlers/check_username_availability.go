@@ -3,9 +3,74 @@ package handlers
 import (
 	"database/sql"
 	"log"
+	"strings"
 
+	"github.com/JOYSTIQ-The-App/Backend/api/services"
+	"github.com/JOYSTIQ-The-App/Backend/api/validators"
 	"github.com/gofiber/fiber/v2"
 )
+
+// Mock list of reserved usernames
+var reservedUsernames = []string{
+	"admin",
+	"administrator",
+	"guest",
+	"support",
+	"help",
+	"root",
+	"user",
+	"staff",
+	"official",
+	"moderator",
+	"mod",
+	"xQc",
+	"Jynxzi",
+	"Loltyler1",
+	"KaiCenat",
+	"FanumTV",
+	"IShowSpeed",
+	"Pewdiepie",
+	"Markiplier",
+	"Ali-A",
+	"Lachlan",
+	"Jacksepticeye",
+	"VanossGaming",
+	"Ninja",
+	"Nickmercs",
+	"Timthetatman",
+	"DrDisrespect",
+	"Cloakzy",
+	"Clix",
+	"Pokimane",
+	"Valkyrae",
+	"Dakotaz",
+	"Tfue",
+	"DrLupo",
+	"SypherPK",
+	"Bugha",
+	"Subroza",
+	"Shanks",
+	"Tarik",
+	"TenZ",
+	"Shroud",
+	"S1mple",
+	"Summit1g",
+	"Aceu",
+	"Faide",
+	"ImperialHal",
+	"LuLu",
+	"lululuvely",
+}
+
+// Function to check if a given username is reserved
+func isUsernameReserved(username string) bool {
+	for _, reservedUsername := range reservedUsernames {
+		if strings.EqualFold(username, reservedUsername) { // Case-insensitive check
+			return true
+		}
+	}
+	return false
+}
 
 func CheckUsernameAvailability(db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
@@ -15,6 +80,28 @@ func CheckUsernameAvailability(db *sql.DB) fiber.Handler {
 		if username == "" {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": "Username must be provided.",
+			})
+		}
+
+		// Check if the new username is valid
+		if !validators.IsValidUsername(username) {
+			return c.JSON(fiber.Map{
+				"availability": false,
+			})
+		}
+
+		// Ensure there is no profanity
+		detector := services.CustomProfanityDetector()
+		if detector.IsProfane(username) {
+			return c.JSON(fiber.Map{
+				"availability": false,
+			})
+		}
+
+		// Check if the username is in the reserved list
+		if isUsernameReserved(username) {
+			return c.JSON(fiber.Map{
+				"availability": false,
 			})
 		}
 

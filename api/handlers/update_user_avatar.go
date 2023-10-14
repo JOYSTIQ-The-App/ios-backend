@@ -5,21 +5,33 @@ import (
 	"log"
 	"time"
 
+	"github.com/JOYSTIQ-The-App/Backend/api/parsers"
 	sq "github.com/Masterminds/squirrel"
 	"github.com/gofiber/fiber/v2"
 )
 
 type AvatarRequestBody struct {
-	Username string `json:"username"`
-	S3Key    string `json:"s3_key"`
+	Username    string `json:"username"`
+	S3Key       string `json:"s3_key"`
+	Environment string `json:"environment"`
 }
 
 func UpdateUserAvatar(db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
+		// Parse body to get post details
 		var requestBody AvatarRequestBody
 		if err := c.BodyParser(&requestBody); err != nil {
 			log.Println(err)
 			return c.Status(fiber.StatusBadRequest).SendString("Failed to parse request body.")
+		}
+
+		// Validate background using parsers
+		environment, err := parsers.ParseEnvironmentType(requestBody.Environment)
+		if err != nil {
+			log.Println(err)
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"message": "Invalid environment type.",
+			})
 		}
 
 		// Confirm presence of required fields
@@ -29,7 +41,7 @@ func UpdateUserAvatar(db *sql.DB) fiber.Handler {
 
 		// Get user ID based on provided username
 		var userID int
-		err := db.QueryRow("SELECT id FROM users WHERE username = $1", requestBody.Username).Scan(&userID)
+		err = db.QueryRow("SELECT id FROM users WHERE username = $1", requestBody.Username).Scan(&userID)
 		if err == sql.ErrNoRows {
 			return c.Status(fiber.StatusNotFound).SendString("User not found.")
 		} else if err != nil {
@@ -45,8 +57,8 @@ func UpdateUserAvatar(db *sql.DB) fiber.Handler {
 		if err == sql.ErrNoRows {
 			// No avatar exists for this user; insert a new one
 			insertQuery := sb.Insert("avatars").
-				Columns("user_id", "s3_key").
-				Values(userID, requestBody.S3Key)
+				Columns("user_id", "s3_key", "environment").
+				Values(userID, requestBody.S3Key, environment)
 			_, err = insertQuery.RunWith(db).Exec()
 			if err != nil {
 				log.Println(err)
@@ -61,6 +73,7 @@ func UpdateUserAvatar(db *sql.DB) fiber.Handler {
 		// Avatar already exists for this user; update it
 		updateQuery := sb.Update("avatars").
 			Set("s3_key", requestBody.S3Key).
+			Set("environment", environment).
 			Set("updated_at", time.Now()).
 			Where(sq.Eq{"user_id": userID})
 

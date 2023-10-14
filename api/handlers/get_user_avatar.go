@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 
+	sq "github.com/Masterminds/squirrel"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -16,9 +17,19 @@ func GetUserAvatar(db *sql.DB) fiber.Handler {
 			return c.Status(fiber.StatusBadRequest).SendString("Username not provided.")
 		}
 
-		// First, retrieve the user's ID based on the provided username
+		// Create the Squirrel statement builder with PostgreSQL dollar format
+		sb := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
+
+		// Retrieve the user's ID based on the provided username
+		query := sb.Select("id").From("users").Where(sq.Eq{"username": username}).Limit(1)
+		sqlQuery, args, err := query.ToSql()
+		if err != nil {
+			log.Println("Error preparing query to get user ID:", err)
+			return c.Status(fiber.StatusInternalServerError).SendString("Failed to retrieve user details.")
+		}
+
 		var userID int
-		err := db.QueryRow("SELECT id FROM users WHERE username = $1", username).Scan(&userID)
+		err = db.QueryRow(sqlQuery, args...).Scan(&userID)
 		if err == sql.ErrNoRows {
 			return c.Status(fiber.StatusNotFound).SendString("User not found.")
 		} else if err != nil {
@@ -26,20 +37,29 @@ func GetUserAvatar(db *sql.DB) fiber.Handler {
 			return c.Status(fiber.StatusInternalServerError).SendString("Failed to retrieve user details.")
 		}
 
-		// Now, retrieve the s3_key for the obtained user ID from the avatars table
-		var s3Key sql.NullString
-		err = db.QueryRow("SELECT s3_key FROM avatars WHERE user_id = $1", userID).Scan(&s3Key)
-		if err == sql.ErrNoRows || !s3Key.Valid {
+		// Retrieve the s3_key and environment for the obtained user ID from the avatars table
+		query = sb.Select("s3_key", "environment").From("avatars").Where(sq.Eq{"user_id": userID}).Limit(1)
+		sqlQuery, args, err = query.ToSql()
+		if err != nil {
+			log.Println("Error preparing query to get avatar details:", err)
+			return c.Status(fiber.StatusInternalServerError).SendString("Failed to retrieve avatar details.")
+		}
+
+		var s3Key, environment sql.NullString
+		err = db.QueryRow(sqlQuery, args...).Scan(&s3Key, &environment)
+		if err == sql.ErrNoRows {
 			return c.JSON(fiber.Map{
-				"s3_key": nil,
+				"s3_key":      nil,
+				"environment": "classic",
 			})
 		} else if err != nil {
-			log.Println("Error retrieving avatar s3_key:", err)
-			return c.Status(fiber.StatusInternalServerError).SendString("Failed to retrieve avatar.")
+			log.Println("Error retrieving avatar s3_key and environment:", err)
+			return c.Status(fiber.StatusInternalServerError).SendString("Failed to retrieve avatar details.")
 		}
 
 		return c.JSON(fiber.Map{
-			"s3_key": s3Key.String,
+			"s3_key":      s3Key.String,
+			"environment": environment.String,
 		})
 	}
 }

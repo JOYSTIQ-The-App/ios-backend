@@ -16,6 +16,11 @@ func DeleteFollow(db *sql.DB) fiber.Handler {
 			return c.Status(fiber.StatusBadRequest).SendString("Failed to parse request body.")
 		}
 
+		// Ensure both usernames were provided
+		if requestBody.FollowerUsername == "" || requestBody.FollowedUsername == "" {
+			return c.Status(fiber.StatusBadRequest).SendString("One of the usernames was blank")
+		}
+
 		// Create the Squirrel statement builder with PostgreSQL dollar format
 		sb := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
 

@@ -9,7 +9,7 @@ import (
 
 func SearchUsernames(db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		searchTerm := c.Query("username") // Assuming the query parameter is named "q"
+		searchTerm := c.Query("username")
 
 		// If search term is empty, return a bad request
 		if searchTerm == "" {
@@ -24,7 +24,7 @@ func SearchUsernames(db *sql.DB) fiber.Handler {
 		// Build the query using Squirrel
 		query := sb.Select("username").
 			From("users").
-			Where("username LIKE ?", "%"+searchTerm+"%").
+			Where("username ILIKE ?", "%"+searchTerm+"%").
 			Limit(10) // Limit to top 10 results, adjust as needed
 
 		// Prepare and execute the query

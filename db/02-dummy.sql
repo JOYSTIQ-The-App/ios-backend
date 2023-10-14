@@ -1,5 +1,6 @@
 -- Users
 INSERT INTO "users" ("email", "username", "role") VALUES
+('joystiq@example.com', 'JOYSTIQ', 'admin'),
 ('joystiq_dev@example.com', 'Joystiq_dev', 'gamer'),
 ('user2@email.com', 'generalUser2', 'gamer'),
 ('user3@email.com', 'generalUser3', 'gamer'),
@@ -13,7 +14,8 @@ INSERT INTO "users" ("email", "username", "role") VALUES
 ('apical@example.com', 'Apical', 'gamer'),
 ('cotts@example.com', 'Naratocotto', 'gamer'),
 ('nooch@example.com', 'Nooch', 'gamer'),
-('blackcat@example.com', 'black cat', 'gamer');
+('blackcat@example.com', 'black_cat', 'gamer'),
+('livi@example.com', 'Livi', 'gamer');
 
 -- Follows
 INSERT INTO "follows" ("following_user_id", "followed_user_id", "created_at") VALUES
@@ -26,11 +28,11 @@ INSERT INTO "follows" ("following_user_id", "followed_user_id", "created_at") VA
 (7, 9, now()),
 (7, 10, now()),
 (11, 13, now()),
-(1, 13, now()),
-(1, 12, now()),
-(1, 2, now()),
-(1, 3, now()),
-(1, 4, now()),
+(2, 13, now()),
+(2, 12, now()),
+(2, 2, now()),
+(2, 3, now()),
+(2, 4, now()),
 (2, 1, now()),
 (3, 1, now()),
 (4, 1, now()),
@@ -43,9 +45,9 @@ INSERT INTO "follows" ("following_user_id", "followed_user_id", "created_at") VA
 
 -- Discussion Posts
 INSERT INTO "posts" ("user_id", "media", "game", "body", "status", "created_at") VALUES
-(1, 'none', 'Valorant', 'This new valorant update sucks', 'live', now() - interval '4 days'),
-(1, 'none', 'LOL', 'This new league update sucks', 'live', now() - interval '8 days'),
-(1, 'none', 'Apex', 'This new Apex update sucks', 'live', now() - interval '12 days'),
+(2, 'none', 'Valorant', 'This new valorant update sucks', 'live', now() - interval '4 days'),
+(2, 'none', 'LOL', 'This new league update sucks', 'live', now() - interval '8 days'),
+(2, 'none', 'Apex', 'This new Apex update sucks', 'live', now() - interval '12 days'),
 (2, 'none', 'GameG', 'Content for first post by User2', 'live', now() - interval '22 days'),
 (2, 'none', 'GameH', 'Content for second post by User2', 'live', now() - interval '2 days'),
 (2, 'none', 'Valorant', 'Content for post by User2', 'live', now() - interval '3 days'),
@@ -81,15 +83,15 @@ INSERT INTO "posts" ("user_id", "media", "game", "body", "status", "created_at")
 (13, 'none', 'GameD', 'This isnt gaming content', 'live', now() - interval '33 minutes');
 
 -- Content Posts
--- INSERT INTO "posts" ("user_id", "s3_key", "media", "game", "body", "status", "created_at") VALUES
--- (13, 'RPReplay_Final1646032101.mov', 'video', 'Valorant', 'This is a sick fucking clip', 'live', now() - interval '4 days'),
--- (13, 'Valorant 2022.05.17 - 02.10.12.02.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '6 days'),
--- (13, 'Valorant 2022.05.19 - 21.12.05.02.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '4 minutes'),
--- (13, 'Valorant 2022.06.14 - 22.36.27.03.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '22 days'),
--- (1, 'Valorant 2022.08.20 - 23.00.43.04.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '23 minutes'),
--- (1, 'Valorant 2022.08.20 - 22.51.58.03.DVR_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '44 days'),
--- (1, 'Valorant 2022.07.28 - 16.43.08.02.DVR_Trim_Trim.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '14 days'),
--- (1, 'IMG_3412.png', 'photo', 'GameD', 'Check out this clip!', 'live', now());
+INSERT INTO "posts" ("user_id", "s3_key", "media", "game", "body", "status", "created_at") VALUES
+(12, '6A1B424B-6CFC-4E6E-A17F-437E4F883E15.mov', 'video', 'Valorant', 'This is a sick fucking clip', 'live', now() - interval '4 days'),
+(12, 'AD14CA5C-F8B2-4CF2-B9AE-60763949A847.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '6 days'),
+(12, '3CDE676B-9A0D-432C-A337-E0CA6E86EA86.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '4 minutes'),
+(12, '20169CB6-DED9-43D0-8390-CD5CDA18E9DC.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '22 days'),
+(1, '60774E3E-F4A7-416C-B4A0-491ABA832DF7.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '23 minutes'),
+(1, 'D3D5F29E-F54B-44D5-873D-6D1C60811C0C.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '44 days'),
+(1, '4FA52E66-2BE1-48CD-9220-559C97B09A6B.mov', 'video', 'GameD', 'Check out this clip!', 'live', now() - interval '14 days'),
+(1, '9347E76F-3DF4-4826-8118-E60574D3CF5D.mov', 'video', 'GameD', 'Check out this clip!', 'live', now());
 
 -- Liked Posts
 INSERT INTO liked_posts (user_id, post_id) VALUES 
@@ -100,13 +102,11 @@ INSERT INTO liked_posts (user_id, post_id) VALUES
 (6, 1),
 (7, 1),
 (8, 1),
-(1, 2),
 (2, 2),
 (3, 2),
 (4, 2),
 (5, 2),
 (6, 2),
-(1, 3),
 (2, 3),
 (3, 3),
 (4, 3),
@@ -118,37 +118,33 @@ INSERT INTO liked_posts (user_id, post_id) VALUES
 (2, 5),
 (3, 5),
 (4, 5),
-(1, 6),
 (2, 6),
 (3, 6),
-(1, 7),
 (2, 7),
 (3, 7),
-(1, 8),
 (2, 8),
 (3, 8),
-(1, 9),
 (2, 9),
 (3, 9),
-(1, 10),
 (2, 10),
-(3, 10);
--- (1, 29),
--- (1, 26),
--- (1, 24),
--- (1, 28),
--- (1, 25),
--- (1, 27);
+(3, 10),
+(12, 38),
+(12, 41),
+(12, 37),
+(12, 43),
+(12, 42),
+(12, 39),
+(12, 40),
+(12, 44);
+
 
 
 -- Comments
 INSERT INTO "comments" ("user_id", "post_id", "text", "created_at") VALUES
-(1, 1, 'Great content, User1!', now() - interval '4 days'),
 (2, 1, 'I agree with User1!', now() - interval '3 days'),
 (2, 2, 'This is even better than the first!', now() - interval '2 days'),
 (3, 2, 'Well said, User2!', now() - interval '1 days'),
 (3, 3, 'What a post!', now() - interval '5 hours'),
-(1, 3, 'Keep it up!', now() - interval '4 hours'),
 (4, 4, 'User2, always on point!', now() - interval '3 hours'),
 (5, 5, 'This game is the best.', now() - interval '2 hours'),
 (6, 6, 'Solid post.', now() - interval '1 hours'),
@@ -169,13 +165,18 @@ INSERT INTO "comments" ("user_id", "post_id", "text", "created_at") VALUES
 -- Profiles
 INSERT INTO "profiles" ("user_id", "bio", "resume") VALUES
 (11, 'JOYSTIQ Founder \nApex gamer, I also like league', 'Solo climbed to Diamond in Apex so yeah, I’m pretty good'),
-(1, 'I am a JOYSTIQ developer. This is a bio for my profile page. I wonder how long this could be.\nNew line check', 'We built this app, so yeah were pretty cool and were pretty dammn good developers.');
+(2, 'I am a JOYSTIQ developer. This is a bio for my profile page. I wonder how long this could be.\nNew line check', 'We built this app, so yeah were pretty cool and were pretty dammn good developers.');
 
 -- Socials
 INSERT INTO "socials" ("user_id", "social", "social_username") VALUES
 (11, 'discord', 'apical'),
 (11, 'twitch', 'apical'),
 (11, 'xbox', 'apical'),
-(1, 'xbox', 'Joystiq_dev'),
-(1, 'discord', 'Joystiq_dev'),
-(1, 'twitch', 'Joystiq_dev');
+(2, 'xbox', 'Joystiq_dev'),
+(2, 'discord', 'Joystiq_dev'),
+(2, 'twitch', 'Joystiq_dev');
+
+INSERT INTO "avatars" ("user_id", "s3_key", "environment") VALUES
+(1, '7D0A0E2D-D6D4-4595-9EAC-A7530694100E', 'gameroom'),
+(12, '78EE385F-6E4B-4E79-BFA2-C1D244A363DC', 'gameroom'),
+(16, '7B370777-ED6F-48E2-B36D-5B1F5D907A23', 'gameroom');

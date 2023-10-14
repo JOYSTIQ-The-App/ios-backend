@@ -32,6 +32,11 @@ CREATE TYPE "media_type" AS ENUM (
   'video'
 );
 
+CREATE TYPE "environment_type" AS ENUM (
+  'classic',
+  'gameroom'
+);
+
 CREATE TABLE "follows" (
   "following_user_id" integer,
   "followed_user_id" integer,
@@ -100,6 +105,7 @@ CREATE TABLE "socials" (
 CREATE TABLE "avatars" (
   "user_id" integer PRIMARY KEY,
   "s3_key" varchar(255) UNIQUE NOT NULL,
+  "environment" environment_type DEFAULT 'gameroom',
   "created_at" timestamp DEFAULT (now()),
   "updated_at" timestamp DEFAULT (now())
 );

@@ -11,6 +11,68 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// Mock list of reserved usernames
+// var validGames = []string{
+// 	"VALORANT",
+// 	"Call of Duty",
+// 	"Call of Duty: Warzone",
+// 	"Apex Legends",
+// 	"Overwatch",
+// 	"Battlefield",
+// 	"Halo",
+// 	"Rust",
+// 	"Escape from Tarkov",
+// 	"Fortnite",
+// 	"League of Legends",
+// 	"Among us",
+// 	"Sea of Thieves",
+// 	"Stardew Valley",
+// 	"Mortal Combat 1",
+// 	"Fall guys",
+// 	"Rocket league",
+// 	"Grand Theft auto",
+// 	"Clash royale",
+// 	"Minecraft",
+// 	"CS:GO",
+// 	"Counter-Strike 2",
+// 	"Super Smash bros",
+// 	"Bloodhunt",
+// 	"Multiversus",
+// 	"God of War",
+// 	"Spiderman",
+// 	"Red Dead Redemption",
+// 	"Resident Evil",
+// 	"Dota 2",
+// 	"Lost Ark",
+// 	"Teamfight Tactics",
+// 	"Dead by Daylight",
+// 	"Rainbow Six Siege",
+// 	"Genshin Impact",
+// 	"Starfield",
+// 	"PlayerUnknown’s Battlegrounds",
+// 	"EA Sports FC 24",
+// 	"NBA 2k24",
+// 	"Hearthstone",
+// 	"Path of Exile",
+// 	"Dark and Darker",
+// 	"Street Fighter 6",
+// 	"Madden NFL 24",
+// 	"Subnautica",
+// 	"Phasmophobia",
+// 	"Elden Ring",
+// 	"DayZ",
+// }
+
+// // Function to check if a given username is reserved
+// func isValidGame(game string) bool {
+// 	for _, validGame := range validGames {
+// 		if strings.EqualFold(game, validGame) { // Case-insensitive check
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }
+
 type PostRequestBody struct {
 	S3Key  sql.NullString `json:"s3_key"`
 	Media  string         `json:"media"`
@@ -52,6 +114,12 @@ func CreatePost(db *sql.DB) fiber.Handler {
 		detector := services.CustomProfanityDetector()
 		if detector.IsProfane(requestBody.Body) {
 			requestBody.Body = detector.Censor(requestBody.Body)
+		}
+
+		if requestBody.Game != "" {
+			if detector.IsProfane(requestBody.Game) {
+				requestBody.Game = ""
+			}
 		}
 
 		// Validate media and status using parsers

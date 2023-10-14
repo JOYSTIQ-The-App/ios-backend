@@ -44,6 +44,8 @@ func GetUserFeed(db *sql.DB) fiber.Handler {
 		}
 		rows.Close()
 
+		followedUserIds = append(followedUserIds, currentUserId)
+
 		// Check if there are any followed user IDs
 		posts := make([]models.FeedPost, 0)
 		if len(followedUserIds) == 0 {
