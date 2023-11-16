@@ -74,12 +74,13 @@ import (
 // }
 
 type PostRequestBody struct {
-	S3Key  sql.NullString `json:"s3_key"`
-	Media  string         `json:"media"`
-	Title  string         `json:"title"`
-	Game   string         `json:"game"`
-	Body   string         `json:"body"`
-	Status string         `json:"status"`
+	S3Key          sql.NullString `json:"s3_key"`
+	ThumbnailS3Key sql.NullString `json:"thumbnail_s3_key"`
+	Media          string         `json:"media"`
+	Title          string         `json:"title"`
+	Game           string         `json:"game"`
+	Body           string         `json:"body"`
+	Status         string         `json:"status"`
 }
 
 func CreatePost(db *sql.DB) fiber.Handler {
@@ -141,20 +142,21 @@ func CreatePost(db *sql.DB) fiber.Handler {
 
 		// Construct the Post model
 		post := models.Post{
-			UserID: currentUserId,
-			S3Key:  requestBody.S3Key,
-			Media:  media,
-			Game:   requestBody.Game,
-			Body:   requestBody.Body,
-			Status: status,
+			UserID:         currentUserId,
+			S3Key:          requestBody.S3Key,
+			ThumbnailS3Key: requestBody.ThumbnailS3Key,
+			Media:          media,
+			Game:           requestBody.Game,
+			Body:           requestBody.Body,
+			Status:         status,
 		}
 
 		// Insert new post into the database using Squirrel
 		sb := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
 
 		query := sb.Insert("posts").
-			Columns("user_id", "s3_key", "media", "game", "body", "status").
-			Values(post.UserID, post.S3Key, post.Media, post.Game, post.Body, post.Status)
+			Columns("user_id", "s3_key", "thumbnail_s3_key", "media", "game", "body", "status").
+			Values(post.UserID, post.S3Key, post.ThumbnailS3Key, post.Media, post.Game, post.Body, post.Status)
 
 		sql, args, err := query.ToSql()
 		if err != nil {

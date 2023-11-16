@@ -10,6 +10,6 @@ select * from users;
 
 -- select * from profiles;
 
-select * from avatars;
+-- select * from avatars;
 
 -- select * from socials;

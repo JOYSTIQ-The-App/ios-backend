@@ -31,10 +31,14 @@ func GetGlobalFeed(db *sql.DB) fiber.Handler {
 		sb := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
 
 		// Build the query using Squirrel
-		query := sb.Select("p.id", "p.user_id", "p.s3_key", "p.media", "p.game", "p.body", "p.status", "p.likes", "p.comments", "p.created_at",
-			"CASE WHEN lp.post_id IS NOT NULL THEN TRUE ELSE FALSE END as user_liked").
-			From("Posts p").
+		query := sb.Select("p.id", "p.user_id", "p.s3_key", "p.thumbnail_s3_key", "p.media", "p.game", "p.body", "p.status", "p.likes", "p.comments", "p.created_at",
+			"CASE WHEN lp.post_id IS NOT NULL THEN TRUE ELSE FALSE END as user_liked",
+			"users.username",
+			"avatars.avatar_s3_key").
+			From("posts p").
 			LeftJoin("liked_posts lp ON p.id = lp.post_id AND lp.user_id = ?", userId).
+			Join("users ON p.user_id = users.id").
+			LeftJoin("avatars ON p.user_id = avatars.user_id").
 			OrderBy("p.created_at DESC").
 			Limit(10)
 
@@ -61,7 +65,7 @@ func GetGlobalFeed(db *sql.DB) fiber.Handler {
 		posts := make([]models.FeedPost, 0)
 		for rows.Next() {
 			var post models.FeedPost
-			if err := rows.Scan(&post.ID, &post.UserID, &post.S3Key, &post.Media, &post.Game, &post.Body, &post.Status, &post.Likes, &post.Comments, &post.CreatedAt, &post.UserLiked); err != nil {
+			if err := rows.Scan(&post.ID, &post.UserID, &post.S3Key, &post.ThumbnailS3Key, &post.Media, &post.Game, &post.Body, &post.Status, &post.Likes, &post.Comments, &post.CreatedAt, &post.UserLiked, &post.Username, &post.AvatarS3Key); err != nil {
 				log.Println(err)
 				return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 			}

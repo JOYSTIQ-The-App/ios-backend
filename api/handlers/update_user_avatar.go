@@ -52,12 +52,12 @@ func UpdateUserAvatar(db *sql.DB) fiber.Handler {
 		// Check if an avatar entry already exists for this user
 		sb := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
 		var existingS3Key string
-		err = db.QueryRow("SELECT s3_key FROM avatars WHERE user_id = $1", userID).Scan(&existingS3Key)
+		err = db.QueryRow("SELECT avatar_s3_key FROM avatars WHERE user_id = $1", userID).Scan(&existingS3Key)
 
 		if err == sql.ErrNoRows {
 			// No avatar exists for this user; insert a new one
 			insertQuery := sb.Insert("avatars").
-				Columns("user_id", "s3_key", "environment").
+				Columns("user_id", "avatar_s3_key", "environment").
 				Values(userID, requestBody.S3Key, environment)
 			_, err = insertQuery.RunWith(db).Exec()
 			if err != nil {
@@ -72,7 +72,7 @@ func UpdateUserAvatar(db *sql.DB) fiber.Handler {
 
 		// Avatar already exists for this user; update it
 		updateQuery := sb.Update("avatars").
-			Set("s3_key", requestBody.S3Key).
+			Set("avatar_s3_key", requestBody.S3Key).
 			Set("environment", environment).
 			Set("updated_at", time.Now()).
 			Where(sq.Eq{"user_id": userID})

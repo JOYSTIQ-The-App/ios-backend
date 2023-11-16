@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"log"
-	"os"
 
 	"github.com/JOYSTIQ-The-App/Backend/api/handlers"
 	"github.com/JOYSTIQ-The-App/Backend/api/jobs"
@@ -14,8 +13,8 @@ import (
 )
 
 func main() {
-	// connStr := "user=postgres password=postgres host=localhost port=5432 dbname=joystiq sslmode=disable"
-	connStr := os.Getenv("DATABASE_URL")
+	connStr := "user=postgres password=postgres host=localhost port=5432 dbname=joystiq sslmode=disable"
+	// connStr := os.Getenv("DATABASE_URL")
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)
@@ -85,6 +84,7 @@ func main() {
 	app.Get("/handlers/is_email_registered", handlers.IsEmailRegistered(db))
 	app.Get("handlers/is_following", handlers.IsFollowing(db))
 	app.Get("handlers/get_user_bio", handlers.GetUserBio(db))
+	app.Get("handlers/get_gamer_profile", handlers.GetGamerProfile(db))
 
 	app.Post("handlers/create_like", handlers.CreateLike(db))
 	app.Post("handlers/create_post", handlers.CreatePost(db))
@@ -99,28 +99,10 @@ func main() {
 	app.Patch("handlers/update_username", handlers.UpdateUsername(db))
 	app.Patch("handlers/report_post", handlers.ReportPost(db))
 
-	// // Likes
-	// app.Delete("/likes", handlers.DeleteLike(db))
-	// app.Post("/likes", handlers.CreateLike(db))
-	// app.Post("/likes/increment", handlers.IncrementLikeCount(db))
-	// app.Post("/likes/decrement", handlers.DecrementLikeCount(db))
+	app.Get("/health", func(c *fiber.Ctx) error {
+		return c.Status(fiber.StatusOK).SendString("OK")
+	})
 
-	// // Feed
-	// app.Get("/feeds/global", handlers.GetGlobalFeed(db))
-	// app.Get("/feeds/leaderboard", handlers.GetLeaderboardFeed(db))
-	// app.Get("/feeds/user", handlers.GetUserFeed(db))
-
-	// // Users
-	// app.Get("/users/username", handlers.GetUsername(db))
-	// app.Get("/users/search", handlers.SearchUsernames(db))
-	// app.Post("/users", handlers.CreateUser(db))
-
-	// // Posts
-	// app.Post("/posts", handlers.CreatePost(db))
-	// app.Get("/posts/comments", handlers.GetPostComments(db))
-
-	// // Comments
-	// app.Post("/comments", handlers.CreateComment(db))
-
+	// log.Fatal(app.Listen("0.0.0.0:8080"))
 	log.Fatal(app.Listen(":8080"))
 }

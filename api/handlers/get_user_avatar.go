@@ -38,7 +38,7 @@ func GetUserAvatar(db *sql.DB) fiber.Handler {
 		}
 
 		// Retrieve the s3_key and environment for the obtained user ID from the avatars table
-		query = sb.Select("s3_key", "environment").From("avatars").Where(sq.Eq{"user_id": userID}).Limit(1)
+		query = sb.Select("avatar_s3_key", "environment").From("avatars").Where(sq.Eq{"user_id": userID}).Limit(1)
 		sqlQuery, args, err = query.ToSql()
 		if err != nil {
 			log.Println("Error preparing query to get avatar details:", err)

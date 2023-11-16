@@ -57,10 +57,14 @@ func GetUserFeed(db *sql.DB) fiber.Handler {
 
 		// Build the query using Squirrels
 		query := sb.Select(
-			"posts.id", "posts.user_id", "s3_key", "media", "game", "body", "status", "likes", "comments", "posts.created_at",
-			"CASE WHEN liked_posts.post_id IS NOT NULL THEN TRUE ELSE FALSE END as user_liked").
+			"posts.id", "posts.user_id", "s3_key", "thumbnail_s3_key", "media", "game", "body", "status", "likes", "comments", "posts.created_at",
+			"CASE WHEN liked_posts.post_id IS NOT NULL THEN TRUE ELSE FALSE END as user_liked",
+			"users.username",
+			"avatars.avatar_s3_key").
 			From("posts").
 			LeftJoin("liked_posts ON posts.id = liked_posts.post_id AND liked_posts.user_id = ?", currentUserId).
+			Join("users ON posts.user_id = users.id").
+			LeftJoin("avatars ON posts.user_id = avatars.user_id").
 			Where(sq.Eq{"posts.user_id": followedUserIds}).
 			OrderBy("created_at DESC").
 			Limit(10)
@@ -87,7 +91,7 @@ func GetUserFeed(db *sql.DB) fiber.Handler {
 		// Scan the results into a slice of Post structs
 		for rows.Next() {
 			var post models.FeedPost
-			if err := rows.Scan(&post.ID, &post.UserID, &post.S3Key, &post.Media, &post.Game, &post.Body, &post.Status, &post.Likes, &post.Comments, &post.CreatedAt, &post.UserLiked); err != nil {
+			if err := rows.Scan(&post.ID, &post.UserID, &post.S3Key, &post.ThumbnailS3Key, &post.Media, &post.Game, &post.Body, &post.Status, &post.Likes, &post.Comments, &post.CreatedAt, &post.UserLiked, &post.Username, &post.AvatarS3Key); err != nil {
 				log.Println(err)
 				return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 			}
