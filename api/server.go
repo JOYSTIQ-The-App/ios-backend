@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"log"
+	"os"
 
 	"github.com/JOYSTIQ-The-App/Backend/api/handlers"
 	"github.com/JOYSTIQ-The-App/Backend/api/jobs"
@@ -13,8 +14,10 @@ import (
 )
 
 func main() {
-	connStr := "user=postgres password=postgres host=localhost port=5432 dbname=joystiq sslmode=disable"
-	// connStr := os.Getenv("DATABASE_URL")
+	connStr := os.Getenv("DATABASE_URL")
+	if connStr == "" {
+		connStr = "user=postgres password=postgres host=localhost port=5432 dbname=joystiq sslmode=disable"
+	}
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)
